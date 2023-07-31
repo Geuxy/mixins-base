@@ -1,6 +1,7 @@
 package me.example.client.util;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
@@ -12,14 +13,17 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
  */
 public class RenderUtil {
 
+    private static final Minecraft mc = Minecraft.getMinecraft();
+    private static final FontRenderer fr = mc.fontRendererObj;
+
     // Draws a centered string with a shadow
     public static void drawCenteredStringWithShadow(String text, float x, float y, int color) {
-        Minecraft.getMinecraft().fontRendererObj.drawString(text, x - (float) Minecraft.getMinecraft().fontRendererObj.getStringWidth(text) / 2, y, color, true);
+        fr.drawString(text, x - (float) fr.getStringWidth(text) / 2, y, color, true);
     }
 
     // Draws a centered string
     public static void drawCenteredString(String text, float x, float y, int color) {
-        Minecraft.getMinecraft().fontRendererObj.drawString(text, x - (float) Minecraft.getMinecraft().fontRendererObj.getStringWidth(text) / 2, y, color, false);
+        fr.drawString(text, x - (float) fr.getStringWidth(text) / 2, y, color, false);
     }
 
     // Draws a rectangle but in a cleaner(ish) way

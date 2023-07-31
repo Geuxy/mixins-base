@@ -15,12 +15,10 @@ import java.io.File;
  */
 @Getter @Setter
 public abstract class Config {
-    private final String name;
-    private final File data;
+    protected final File file;
 
-    public Config(String name) {
-        this.name = name;
-        this.data = new File(Minecraft.getMinecraft().mcDataDir + File.separator + Base.INSTANCE.clientName + File.separator + name);
+    public Config(File file) {
+        this.file = file;
     }
 
     public abstract void save();

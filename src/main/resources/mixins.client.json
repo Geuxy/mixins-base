@@ -4,10 +4,10 @@
   "package": "me.example.client.mixins",
   "refmap": "mixins.client.json",
   "verbose": true,
-
   "mixins": [
     "client.MixinMinecraft",
-    "client.settings.MixinGameSettings",
-    "client.gui.MixinGuiIngame"
+    "client.gui.MixinGuiIngame",
+    "client.renderer.MixinEntityRenderer",
+    "client.settings.MixinGameSettings"
   ]
 }

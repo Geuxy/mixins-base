@@ -25,12 +25,13 @@ public class Base {
     public void init() {
         this.configManager = new ConfigManager();
 
-        configManager.getModConfig().load();
+        this.configManager.onInit();
 
         EventProtocol.register(this);
     }
 
     public void stop() {
+        this.configManager.getModConfig().save();
         EventProtocol.unregister(this);
     }
 

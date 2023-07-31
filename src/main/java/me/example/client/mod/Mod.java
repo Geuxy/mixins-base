@@ -1,5 +1,6 @@
 package me.example.client.mod;
 
+import com.google.gson.JsonObject;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,7 +15,7 @@ import net.minecraft.client.Minecraft;
  * @author Geuxy
  */
 @Getter @Setter
-public class Mod {
+public abstract class Mod {
     private ModInfo info = this.getClass().getAnnotation(ModInfo.class);
     private boolean enabled;
 
@@ -52,6 +53,23 @@ public class Mod {
     protected void save() {
         if(Base.INSTANCE.getConfigManager() != null)
             Base.INSTANCE.getConfigManager().getModConfig().save();
+    }
+
+    public JsonObject toJson() {
+        JsonObject json = new JsonObject();
+
+        json.addProperty("enabled", isEnabled());
+
+        return json;
+    }
+
+    public void parseJson(JsonObject json) {
+        try {
+            this.setEnabled(json.get("enabled").getAsBoolean());
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }
