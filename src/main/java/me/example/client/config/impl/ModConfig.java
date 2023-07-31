@@ -20,14 +20,6 @@ public class ModConfig extends Config {
 
     public ModConfig(File file) {
         super(file);
-
-//        if(!getFile().exists()) {
-//            try {
-//                getFile().createNewFile();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
     }
 
     private JsonObject convertModsToJson() {
