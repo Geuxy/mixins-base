@@ -1,5 +1,6 @@
 package me.example.client.mod;
 
+import com.google.gson.JsonObject;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -62,4 +63,27 @@ public abstract class HudMod extends Mod {
         return (mouseX >= posX && mouseX <= posX + bounds.width()) && (mouseY >= posY && mouseY <= posY + bounds.height());
     }
 
+    @Override
+    public JsonObject toJson() {
+        JsonObject json = new JsonObject();
+
+        json.addProperty("enabled", isEnabled());
+        json.addProperty("x", posX);
+        json.addProperty("y", posY);
+
+        return json;
+    }
+
+    @Override
+    public void parseJson(JsonObject json) {
+        super.parseJson(json);
+
+        try {
+            this.setPosX(json.get("x").getAsFloat());
+            this.setPosY(json.get("y").getAsFloat());
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

@@ -17,13 +17,24 @@ import java.io.File;
 public class ConfigManager {
     private final ModConfig modConfig;
 
+    private static final File DIRECTORY = new File(Minecraft.getMinecraft().mcDataDir, Base.INSTANCE.clientName);
+
     public ConfigManager() {
-        File directory = new File(Minecraft.getMinecraft().mcDataDir + File.separator + Base.INSTANCE.clientName);
 
-        if(!directory.exists())
-            directory.mkdir();
+        if (!DIRECTORY.exists()) {
+            DIRECTORY.mkdirs();
+        }
 
-        this.modConfig = new ModConfig();
+        this.modConfig = new ModConfig(new File(DIRECTORY, "settings.json"));
+    }
+
+    public void onInit() {
+        if (modConfig.getFile().exists()) {
+            modConfig.load();
+        }
+        else {
+            modConfig.save();
+        }
     }
 
 }
