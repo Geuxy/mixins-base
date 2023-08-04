@@ -8,3 +8,5 @@ A PvP Minecraft Client base using Mixins.
   Config System with Mod config.
 * Mixin tweaker.
 * Drag hud.
+* Modlist Gui.
+* Value System
