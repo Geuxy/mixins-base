@@ -21,4 +21,4 @@ A GUI that lets you drag hud mods smoothly.
 A GUI that lets you change states and values of mods
 
 ### Value System
-A system that lets values be customizable from Modlist GUI.
+A system using generics that lets values be customizable from Modlist GUI.
