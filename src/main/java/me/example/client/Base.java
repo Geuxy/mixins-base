@@ -5,6 +5,7 @@ import me.example.client.config.ConfigManager;
 import me.example.client.event.EventProtocol;
 import me.example.client.keybinding.KeybindingManager;
 import me.example.client.mod.ModManager;
+import me.example.client.value.ValueManager;
 
 /**
  * Basic mixin client base.
@@ -19,12 +20,14 @@ public class Base {
     public final String clientBuild = "0.1";
 
     private final KeybindingManager keybindingManager = new KeybindingManager();
-    private final ModManager modManager = new ModManager();
+    private final ValueManager valueManager = new ValueManager();
+    private ModManager modManager;
     private ConfigManager configManager;
 
     public void init() {
-        this.configManager = new ConfigManager();
+        this.modManager = new ModManager();
 
+        this.configManager = new ConfigManager();
         this.configManager.onInit();
 
         EventProtocol.register(this);

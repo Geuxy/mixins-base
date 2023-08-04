@@ -4,6 +4,7 @@ import me.example.client.mod.annotations.Bounds;
 import me.example.client.mod.HudMod;
 import me.example.client.mod.annotations.ModInfo;
 import me.example.client.util.RenderUtil;
+import me.example.client.value.impl.CheckBoxValue;
 
 /**
  * Basic mixin client base.
@@ -12,6 +13,9 @@ import me.example.client.util.RenderUtil;
 @Bounds(posX = 20, posY = 5, width = 100, height = 20)
 @ModInfo(name = "TestModule", description = "A cool example module")
 public class TestMod extends HudMod {
+
+    // Setting example
+    private final CheckBoxValue border = new CheckBoxValue("Border", this);
 
     // Renders mod while in game
     @Override

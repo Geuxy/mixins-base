@@ -38,12 +38,12 @@ public class ModManager {
         }
     }
 
-    public Mod getMod(Class<?> modClass) {
-        return modList.stream().filter(m -> m.getClass().equals(modClass)).findFirst().orElse(null);
+    public <T extends Mod> T getMod(Class<?> modClass) {
+        return (T) modList.stream().filter(m -> m.getClass().equals(modClass)).findFirst().orElse(null);
     }
 
-    public Mod getMod(String name) {
-        return modList.stream().filter(m -> m.getInfo().name().equalsIgnoreCase(name)).findFirst().orElse(null);
+    public <T extends Mod> T  getMod(String name) {
+        return (T) modList.stream().filter(m -> m.getInfo().name().equalsIgnoreCase(name)).findFirst().orElse(null);
     }
 
 }

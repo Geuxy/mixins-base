@@ -2,10 +2,12 @@ package me.example.client.util;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import org.lwjgl.opengl.GL11;
 
 /**
  * Basic mixin client base.
@@ -15,6 +17,14 @@ public class RenderUtil {
 
     private static final Minecraft mc = Minecraft.getMinecraft();
     private static final FontRenderer fr = mc.fontRendererObj;
+
+    // Draws a hollow rectangle
+    public static void drawBorderRect(float x, float y, float width, float height, float thickness, int color) {
+        drawRect(x, y, thickness, height, color); // Left
+        drawRect(x + width, y, -thickness, height, color); // Right
+        drawRect(x, y, width, thickness, color); // Top
+        drawRect(x, y + height, width, -thickness, color); // Bottom
+    }
 
     // Draws a centered string with a shadow
     public static void drawCenteredStringWithShadow(String text, float x, float y, int color) {
@@ -67,6 +77,22 @@ public class RenderUtil {
 
         GlStateManager.enableTexture2D();
         GlStateManager.disableBlend();
+    }
+
+    public static void glScissor(float x, float y, float width, float height) {
+        width = (float) Math.max(width, 0.1);
+
+        ScaledResolution sr = new ScaledResolution(mc);
+        double scale = sr.getScaleFactor();
+
+        y = sr.getScaledHeight() - y;
+
+        x *= scale;
+        y *= scale;
+        width *= scale;
+        height *= scale;
+
+        GL11.glScissor((int) x, (int) (y - height), (int) width, (int) height);
     }
 
 }
