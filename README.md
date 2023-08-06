@@ -22,3 +22,13 @@ A GUI that lets you change states and values of mods
 
 ### Value System
 A system using generics that lets values be customizable from Modlist GUI.
+
+
+### How to initialize?
+
+- Open project
+- Reload gradle and download all dependencies
+- Ignore "Could not find net.minecraft:minecraftBin:1.8.9."
+- Run "setupDecompWorkspace" in forgegradle catalog
+- Reload gradle again.
+- Done.
