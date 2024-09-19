@@ -39,7 +39,9 @@ public class GuiModValues extends GuiScreen {
             float compWidth = modlist.getWindowWidth() * 2 - 24;
             float compHeight = 16;
 
-            if(v instanceof CheckBoxValue) {
+            /* TODO: When adding new values, copy what i did here
+             *       with check box but the value type and value return type instead */
+            if(v.isCheckBox()) {
                 VALUES.add(new CheckBox((CheckBoxValue) v, 0, 0, compWidth, compHeight));
             }
         });

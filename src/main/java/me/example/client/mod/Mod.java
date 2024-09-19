@@ -76,7 +76,7 @@ public abstract class Mod implements IMinecraft {
     public JsonObject toJson() {
         JsonObject valuesJson = new JsonObject();
 
-        /* TODO: When adding new mods, copy what i did
+        /* TODO: When adding new values, copy what i did here
          *       with check box but the value type and value return type instead */
         for(Value<?> value : values) {
             if(value.isCheckBox()) {
@@ -98,7 +98,7 @@ public abstract class Mod implements IMinecraft {
     public void parseJson(JsonObject json) {
         JsonObject valuesJson = json.get("values").getAsJsonObject();
 
-        /* TODO: When adding new mods, copy what i did
+        /* TODO: When adding new values, copy what i did here
          *       with check box but the value type and value return type instead */
         for (Value<?> value : values) {
             if(value.isCheckBox()) {
