@@ -1,19 +1,18 @@
 package me.example.client.event;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.RequiredArgsConstructor;
+
+import me.example.client.event.callables.Event;
 
 import java.lang.reflect.Method;
 
-/**
- * Basic mixin client base.
- * @author Geuxy
- */
-@Getter @Setter
-@AllArgsConstructor
+@Getter @RequiredArgsConstructor
 public class EventData {
+
     private final Object source;
     private final Method target;
-    private final byte priority;
+    private final Class<? extends Event> eventType;
+    private final int priority;
+
 }

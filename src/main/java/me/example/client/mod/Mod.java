@@ -1,25 +1,37 @@
 package me.example.client.mod;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import lombok.Getter;
 import lombok.Setter;
 
-import me.example.client.Base;
+import me.example.client.BaseClient;
 import me.example.client.mod.annotations.Bounds;
 import me.example.client.mod.annotations.ModInfo;
 
-import net.minecraft.client.Minecraft;
+import me.example.client.mod.value.impl.CheckBoxValue;
+import me.example.client.util.interfaces.IMinecraft;
+import me.example.client.mod.value.Value;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Basic mixin client base.
  * @author Geuxy
  */
 @Getter @Setter
-public abstract class Mod {
+public abstract class Mod implements IMinecraft {
+
+    private final List<Value<?>> values = new ArrayList<>();
+
     private ModInfo info = this.getClass().getAnnotation(ModInfo.class);
+
     private boolean enabled;
 
-    protected final Minecraft mc = Minecraft.getMinecraft();
+    public Mod() {
+        BaseClient.INSTANCE.getModManager().setRecentlyAddedMod(this);
+    }
 
     // Checks if module is a hud module by checking if it has Bounds annotation
     public boolean isHud() {
@@ -27,49 +39,73 @@ public abstract class Mod {
     }
 
     // Called when module is enabled
-    public void onEnable() {}
+    public void onEnable() {
+    }
 
     // Called when module is disabled
-    public void onDisable() {}
+    public void onDisable() {
+    }
 
     // Toggles mod to the opposite state
     public void toggle() {
         this.setEnabled(!enabled);
     }
 
-    // Sets mod state
+    /*
+     * Changes the modules state, calls onEnable or onDisable, and saves changes to file.
+     */
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
 
         if(enabled) {
             this.onEnable();
+
         } else {
             this.onDisable();
         }
-        this.save();
+
+        // Save module state
+        if(BaseClient.INSTANCE.getConfigManager() != null) {
+            BaseClient.INSTANCE.getConfigManager().getModConfig().save();
+        }
     }
 
-    // Saves configuration
-    protected void save() {
-        if(Base.INSTANCE.getConfigManager() != null)
-            Base.INSTANCE.getConfigManager().getModConfig().save();
-    }
-
+    /*
+     * Serializes the mod and its values into a json
+     */
     public JsonObject toJson() {
+        JsonObject valuesJson = new JsonObject();
+
+        /* TODO: When adding new mods, copy what i did
+         *       with check box but the value type and value return type instead */
+        for(Value<?> value : values) {
+            if(value.isCheckBox()) {
+                valuesJson.addProperty(value.getName(), (Boolean) value.getValue());
+            }
+        }
+
         JsonObject json = new JsonObject();
 
+        json.add("values", valuesJson);
         json.addProperty("enabled", isEnabled());
 
         return json;
     }
 
+    /*
+     * Deserializes the json
+     */
     public void parseJson(JsonObject json) {
-        try {
-            this.setEnabled(json.get("enabled").getAsBoolean());
+        JsonObject valuesJson = json.get("values").getAsJsonObject();
+
+        /* TODO: When adding new mods, copy what i did
+         *       with check box but the value type and value return type instead */
+        for (Value<?> value : values) {
+            if(value.isCheckBox()) {
+                ((CheckBoxValue)value).setValue(valuesJson.get(value.getName()).getAsBoolean());
+            }
         }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
+        this.setEnabled(json.get("enabled").getAsBoolean());
     }
 
 }

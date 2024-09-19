@@ -1,49 +1,91 @@
 package me.example.client.mod;
 
 import lombok.Getter;
+import lombok.Setter;
 
-import me.example.client.Base;
-import me.example.client.event.EventProtocol;
-import me.example.client.event.EventTarget;
+import me.example.client.BaseClient;
+import me.example.client.event.EventSubscriber;
 import me.example.client.event.impl.Render2DEvent;
 import me.example.client.gui.HudConfigScreen;
 import me.example.client.mod.impl.hud.TestMod;
-import net.minecraft.client.Minecraft;
-
-import java.util.concurrent.CopyOnWriteArrayList;
+import me.example.client.util.containers.Storage;
+import me.example.client.util.interfaces.IMinecraft;
+import me.example.client.mod.value.Value;
 
 /**
  * Basic mixin client base.
  * @author Geuxy
  */
 @Getter
-public class ModManager {
+@SuppressWarnings("unchecked")
+public class ModManager extends Storage<Mod> implements IMinecraft {
 
-    private final CopyOnWriteArrayList<Mod> modList = new CopyOnWriteArrayList<>();
+    /*
+     * Somewhat of a mod context, meaning every time
+     * a mod gets added to the list and the constructor
+     * is called, it gets stored in this value and is used
+     * when the values in the mod class start initializing
+     * after the mod class.
+     *
+     * it hurts my head to even explain this, but it works.
+     */
+    @Setter
+    private Mod recentlyAddedMod;
 
-    public ModManager() {
-        modList.add(new TestMod());
+    @Override
+    public void onStart() {
+        this.addAll(
+            TestMod::new/*,
+            AnotherTestMod::new,
+            YetAnotherTestMod::new*/
+        );
 
-        EventProtocol.register(this);
+        BaseClient.INSTANCE.getEventManager().register(this);
     }
 
-    @EventTarget
+    @EventSubscriber
     public void onRender2D(Render2DEvent event) {
-        if(!(Minecraft.getMinecraft().currentScreen instanceof HudConfigScreen)) {
-            for (Mod mod : Base.INSTANCE.getModManager().getModList()) {
-
-                if (mod.isHud() && mod.isEnabled())
-                    ((HudMod) mod).render();
-            }
+        if(!(mc.currentScreen instanceof HudConfigScreen)) {
+            this.stream().filter(m -> m.isHud() && m.isEnabled()).forEach( m -> ((HudMod)m).render());
         }
     }
 
-    public <T extends Mod> T getMod(Class<?> modClass) {
-        return (T) modList.stream().filter(m -> m.getClass().equals(modClass)).findFirst().orElse(null);
+    /**
+     * Gets a module by its name
+     *
+     * @param name Mod name
+     * @return mod with same name
+     */
+    public <T extends Mod> T getModByName(String name) {
+        return (T) findFirst(m -> m.getInfo().name().equalsIgnoreCase(name));
     }
 
-    public <T extends Mod> T  getMod(String name) {
-        return (T) modList.stream().filter(m -> m.getInfo().name().equalsIgnoreCase(name)).findFirst().orElse(null);
+    /**
+     * Gets a value by its mod and name
+     *
+     * @param name Values name
+     * @param mod Mod that the value is from
+     * @return Value that has the same name and mod
+     */
+    public <T extends Value<?>> T getValueByMod(String name, Mod mod) {
+        return (T) mod.getValues().stream()
+            .filter(v -> v.getName().equals(name))
+            .findFirst()
+            .orElse(null);
+    }
+
+    /**
+     * Gets a value by its mods class and name
+     *
+     * @param name Values name
+     * @param mod Mods class that the value is from
+     * @return Value that has the same name and mod
+     */
+    public <T extends Value<?>> T getValueByClass(String name, Class<? extends Mod> mod) {
+        return (T) getByClass(mod).getValues().stream()
+            .filter(v -> v.getName().equals(name))
+            .findFirst()
+            .orElse(null);
     }
 
 }

@@ -1,7 +1,7 @@
 package me.example.client.event.impl;
 
 import lombok.Getter;
-import me.example.client.event.Event;
+import me.example.client.event.callables.Event;
 
 public class Render3DEvent extends Event {
 

@@ -2,10 +2,10 @@ package me.example.client.gui.modlist;
 
 import lombok.Getter;
 import lombok.Setter;
-import me.example.client.Base;
+import me.example.client.BaseClient;
 import me.example.client.gui.modlist.component.impl.ModButton;
-import me.example.client.util.MouseUtil;
-import me.example.client.util.RenderUtil;
+import me.example.client.util.input.MouseUtil;
+import me.example.client.util.visual.RenderUtil;
 import net.minecraft.client.gui.GuiScreen;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
@@ -37,7 +37,7 @@ public class GuiModlist extends GuiScreen {
         float modWidth = windowWidth * 2 - 24;
         float modHeight = 25;
 
-        Base.INSTANCE.getModManager().getModList().forEach(m -> MODS.add(new ModButton(m, this, 0, 0, modWidth, modHeight)));
+        BaseClient.INSTANCE.getModManager().forEach(m -> MODS.add(new ModButton(m, this, 0, 0, modWidth, modHeight)));
     }
 
     @Override
@@ -66,7 +66,7 @@ public class GuiModlist extends GuiScreen {
         RenderUtil.drawBorderRect(halfWidth - windowWidth, halfHeight - windowHeight, windowWidth * 2, windowHeight * 2, 0.5F, 0x90000000);
         RenderUtil.drawBorderRect(halfWidth - windowWidth, halfHeight - windowHeight, windowWidth * 2, 30, 0.5F, 0x90000000);
 
-        String title = Base.INSTANCE.getClientName() + " Client";
+        String title = BaseClient.INSTANCE.getName() + " Client";
         mc.fontRendererObj.drawString(title, (int) (halfWidth - windowWidth + 10), (int) (halfHeight - windowHeight + 15) - mc.fontRendererObj.FONT_HEIGHT / 2, -1);
     }
 
@@ -104,7 +104,7 @@ public class GuiModlist extends GuiScreen {
     }
 
     public boolean isOverModArea(int mouseX, int mouseY) {
-        return MouseUtil.isMouseOver(mouseX, mouseY, halfWidth - windowWidth, halfHeight - windowHeight + 31, windowWidth * 2, windowHeight * 2 - 31);
+        return MouseUtil.isMouseAt(mouseX, mouseY, halfWidth - windowWidth, halfHeight - windowHeight + 31, windowWidth * 2, windowHeight * 2 - 31);
     }
 
 }

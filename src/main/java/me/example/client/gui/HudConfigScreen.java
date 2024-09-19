@@ -1,6 +1,6 @@
 package me.example.client.gui;
 
-import me.example.client.Base;
+import me.example.client.BaseClient;
 import me.example.client.gui.elements.BaseButton;
 import me.example.client.gui.modlist.GuiModlist;
 import me.example.client.mod.HudMod;
@@ -15,11 +15,14 @@ import java.io.IOException;
  * @author Geuxy
  */
 public class HudConfigScreen extends GuiScreen {
+
     private GuiModlist guiModlist;
+
+    private HudMod draggingMod;
 
     @Override
     public void initGui() {
-        super.initGui();
+        draggingMod = null;
 
         this.buttonList.add(new BaseButton(0, width / 2 - 60, height / 2 - 10, 120, 20, "Mods"));
     }
@@ -30,10 +33,16 @@ public class HudConfigScreen extends GuiScreen {
 
         super.drawScreen(mouseX, mouseY, partialTicks);
 
-        for(Mod mod : Base.INSTANCE.getModManager().getModList()) {
+        for(Mod mod : BaseClient.INSTANCE.getModManager()) {
+            if(mod.isHud() && mod.isEnabled()) {
+                HudMod hudMod = (HudMod) mod;
 
-            if(mod.isHud() && mod.isEnabled())
-                ((HudMod)mod).renderDummy((float) mouseX, (float) mouseY);
+                if(draggingMod == hudMod) {
+                    hudMod.animateDrag(mouseX, mouseY);
+                }
+
+                hudMod.renderDummy();
+            }
         }
     }
 
@@ -48,4 +57,26 @@ public class HudConfigScreen extends GuiScreen {
         mc.displayGuiScreen(guiModlist);
     }
 
+    @Override
+    protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
+        super.mouseClicked(mouseX, mouseY, mouseButton);
+
+        if(draggingMod == null) {
+            this.draggingMod = (HudMod) BaseClient.INSTANCE.getModManager()
+                .findFirst(m -> m.isHud() && m.isEnabled() && ((HudMod)m).isHovered(mouseX, mouseY));
+        }
+
+        if(draggingMod != null) {
+            this.draggingMod.drag(mouseX, mouseY);
+        }
+    }
+
+    @Override
+    protected void mouseReleased(int mouseX, int mouseY, int state) {
+        super.mouseReleased(mouseX, mouseY, state);
+        if(draggingMod != null) {
+            BaseClient.INSTANCE.getConfigManager().getModConfig().save();
+        }
+        this.draggingMod = null;
+    }
 }

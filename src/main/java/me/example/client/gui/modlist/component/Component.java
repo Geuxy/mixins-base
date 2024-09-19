@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import me.example.client.gui.modlist.GuiModlist;
-import me.example.client.util.MouseUtil;
+import me.example.client.util.input.MouseUtil;
 
 /**
  * Basic mixin client base.
@@ -20,7 +20,7 @@ public abstract class Component {
     public abstract void mouseClicked(int mouseX, int mouseY, int mouseButton);
 
     public boolean isHovered(int mouseX, int mouseY) {
-        return MouseUtil.isMouseOver(mouseX, mouseY, x, y, width, height);
+        return MouseUtil.isMouseAt(mouseX, mouseY, x, y, width, height);
     }
 
 }

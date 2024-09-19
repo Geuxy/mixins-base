@@ -1,11 +1,9 @@
 package me.example.client.config;
 
+import com.google.gson.Gson;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-
-import me.example.client.Base;
-
-import net.minecraft.client.Minecraft;
 
 import java.io.File;
 
@@ -13,14 +11,13 @@ import java.io.File;
  * Basic mixin client base.
  * @author Geuxy
  */
-@Getter @Setter
+@Getter @Setter @RequiredArgsConstructor
 public abstract class Config {
-    protected final File file;
 
-    public Config(File file) {
-        this.file = file;
-    }
+    protected final File file;
+    protected final Gson gson;
 
     public abstract void save();
     public abstract void load();
+
 }

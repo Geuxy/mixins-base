@@ -1,11 +1,13 @@
 package me.example.client.mod;
 
 import com.google.gson.JsonObject;
+
 import lombok.Getter;
 import lombok.Setter;
 
 import me.example.client.mod.annotations.Bounds;
-import org.lwjgl.input.Mouse;
+import me.example.client.util.console.ConsoleUtil;
+import me.example.client.util.input.MouseUtil;
 
 /**
  * Basic mixin client base.
@@ -13,61 +15,64 @@ import org.lwjgl.input.Mouse;
  */
 @Getter @Setter
 public abstract class HudMod extends Mod {
+
+    // Default bounds when there is no configuration
     private final Bounds bounds = getClass().getAnnotation(Bounds.class);
 
-    private float posX = bounds.posX(), lastX;
-    private float posY = bounds.posY(), lastY;
+    // Mods current position
+    private float posX = bounds.posX();
+    private float posY = bounds.posY();
 
-    private boolean dragging, lastDragging;
+    // Mods last position, kind of
+    private float lastX;
+    private float lastY;
 
+    /*
+     * Render the mod on the screen when enabled
+     */
     public abstract void render();
 
-    public void renderDummy(float mouseX, float mouseY) {
-        this.handleDrag(mouseX, mouseY);
+    /*
+     * Render a example on what the mod would look like
+     */
+    public abstract void renderDummy();
 
-        if(lastDragging && !dragging)
-            this.save();
-
-        this.lastDragging = dragging;
+    /**
+     * Moves the mod position on the screen
+     *
+     * @param mouseX mouse X (horizontal) position
+     * @param mouseY mouse Y (vertical) position
+     */
+    public void animateDrag(int mouseX, int mouseY) {
+        this.posX = mouseX - lastX;
+        this.posY = mouseY - lastY;
     }
 
-    private void handleDrag(float mouseX, float mouseY) {
-        if(this.isHovered(mouseX, mouseY)) {
-            if(Mouse.isButtonDown(0)) {
-                this.dragMod(mouseX, mouseY);
-            }
-        }
-        this.releaseMod(mouseX, mouseY);
+    /**
+     * Sets the last position after clicking
+     *
+     * @param mouseX mouse X (horizontal) position
+     * @param mouseY mouse Y (vertical) position
+     */
+    public void drag(int mouseX, int mouseY) {
+        this.lastX = mouseX - posX;
+        this.lastY = mouseY - posY;
     }
 
-    private void dragMod(float mouseX, float mouseY) {
-        if(!dragging) {
-            this.dragging = true;
-
-            this.lastX = this.posX - mouseX;
-            this.lastY = this.posY - mouseY;
-        }
-    }
-
-    private void releaseMod(float mouseX, float mouseY) {
-        if(dragging) {
-            if(!Mouse.isButtonDown(0))
-                this.dragging = false;
-
-            this.posX = mouseX + this.lastX;
-            this.posY = mouseY + this.lastY;
-        }
-    }
-
-    public boolean isHovered(float mouseX, float mouseY) {
-        return (mouseX >= posX && mouseX <= posX + bounds.width()) && (mouseY >= posY && mouseY <= posY + bounds.height());
+    /**
+     * Checks if the cursor is hovering on the mod.
+     *
+     * @param mouseX mouse X (horizontal) position
+     * @param mouseY mouse Y (vertical) position
+     */
+    public boolean isHovered(int mouseX, int mouseY) {
+        return MouseUtil.isMouseAt(mouseX, mouseY, posX, posY, bounds.width(), bounds.height());
     }
 
     @Override
     public JsonObject toJson() {
-        JsonObject json = new JsonObject();
+        JsonObject json = super.toJson();
 
-        json.addProperty("enabled", isEnabled());
         json.addProperty("x", posX);
         json.addProperty("y", posY);
 
@@ -81,9 +86,11 @@ public abstract class HudMod extends Mod {
         try {
             this.setPosX(json.get("x").getAsFloat());
             this.setPosY(json.get("y").getAsFloat());
-        }
-        catch (Exception e) {
-            e.printStackTrace();
+
+        } catch (Exception e) {
+            ConsoleUtil.error("Failed to parse configuration for '" + getInfo().name() + "'!");
+            ConsoleUtil.error(e.getMessage());
         }
     }
+
 }

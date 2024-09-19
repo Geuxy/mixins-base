@@ -18,7 +18,7 @@ public class MixinGuiIngame {
 
     @Inject(method = "renderGameOverlay", at = @At("RETURN"))
     public void renderGameOverlay(CallbackInfo ignored) {
-        new Render2DEvent().onFire();
+        new Render2DEvent().call();
     }
 
 }

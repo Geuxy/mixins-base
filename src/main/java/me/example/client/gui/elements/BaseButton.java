@@ -1,7 +1,7 @@
 package me.example.client.gui.elements;
 
-import me.example.client.util.MouseUtil;
-import me.example.client.util.RenderUtil;
+import me.example.client.util.input.MouseUtil;
+import me.example.client.util.visual.RenderUtil;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
@@ -18,7 +18,8 @@ public class BaseButton extends GuiButton {
 
     @Override
     public void drawButton(Minecraft mc, int mouseX, int mouseY) {
-        this.hovered = MouseUtil.isMouseOver(mouseX, mouseY, xPosition, yPosition, width, height);
+        this.hovered = MouseUtil.isMouseAt(mouseX, mouseY, xPosition, yPosition, width, height);
+
         RenderUtil.drawRect(xPosition, yPosition, width, height, 0x90000000);
         RenderUtil.drawBorderRect(xPosition, yPosition, width, height, 0.5f, 0xFF000000);
 

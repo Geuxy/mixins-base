@@ -1,11 +1,13 @@
 package me.example.client.config;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import lombok.Getter;
 
-import me.example.client.Base;
+import me.example.client.BaseClient;
 import me.example.client.config.impl.ModConfig;
-
-import net.minecraft.client.Minecraft;
+import me.example.client.util.interfaces.IMinecraft;
 
 import java.io.File;
 
@@ -14,25 +16,39 @@ import java.io.File;
  * @author Geuxy
  */
 @Getter
-public class ConfigManager {
-    private final ModConfig modConfig;
+public class ConfigManager implements IMinecraft {
 
-    private static final File DIRECTORY = new File(Minecraft.getMinecraft().mcDataDir, Base.INSTANCE.clientName);
+    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
-    public ConfigManager() {
+    // Mod configuration file
+    private ModConfig modConfig;
 
-        if (!DIRECTORY.exists()) {
-            DIRECTORY.mkdirs();
+    // Client config directory (eg: '.minecraft/BaseClient/')
+    private File directory;
+
+    /*
+     * Called when client starts
+     */
+    public void onStart() {
+        this.directory = new File(mc.mcDataDir, BaseClient.INSTANCE.getName());
+
+        if(!directory.exists()) {
+            directory.mkdirs();
         }
 
-        this.modConfig = new ModConfig(new File(DIRECTORY, "settings.json"));
+        this.modConfig = new ModConfig(new File(directory, "settings.json"), GSON);
+
+        this.createModConfig();
     }
 
-    public void onInit() {
-        if (modConfig.getFile().exists()) {
+    /*
+     * Load config if mod config file exists, else create one
+     */
+    public void createModConfig() {
+        if(modConfig.getFile().exists()) {
             modConfig.load();
-        }
-        else {
+
+        } else {
             modConfig.save();
         }
     }

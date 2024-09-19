@@ -23,14 +23,17 @@ public class Tweaker implements ITweaker {
     public void acceptOptions(List<String> args, File gameDir, File assetsDir, String profile) {
         this.ARGUMENTS.addAll(args);
 
-        if (!args.contains("--version") && profile != null)
+        if (!args.contains("--version") && profile != null) {
             this.addArgs("version", profile);
+        }
 
-        if (!args.contains("--assetDir") && assetsDir != null)
+        if (!args.contains("--assetDir") && assetsDir != null) {
             this.addArgs("assetDir", assetsDir.getAbsolutePath());
+        }
 
-        if (!args.contains("--gameDir") && gameDir != null)
+        if (!args.contains("--gameDir") && gameDir != null) {
             this.addArgs("gameDir", gameDir.getAbsolutePath());
+        }
     }
 
     @Override
@@ -41,8 +44,9 @@ public class Tweaker implements ITweaker {
 
         Mixins.addConfiguration("mixins.client.json");
 
-        if (env.getObfuscationContext() == null)
+        if (env.getObfuscationContext() == null) {
             env.setObfuscationContext("notch");
+        }
 
         env.setSide(MixinEnvironment.Side.CLIENT);
     }

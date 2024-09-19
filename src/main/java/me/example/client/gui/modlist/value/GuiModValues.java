@@ -1,16 +1,13 @@
 package me.example.client.gui.modlist.value;
 
-import me.example.client.Base;
-import me.example.client.gui.elements.BaseButton;
 import me.example.client.gui.modlist.GuiModlist;
-import me.example.client.gui.modlist.component.impl.ModButton;
 import me.example.client.gui.modlist.component.sub.SubComponent;
 import me.example.client.gui.modlist.component.sub.impl.CheckBox;
 import me.example.client.mod.Mod;
 
-import me.example.client.util.MouseUtil;
-import me.example.client.util.RenderUtil;
-import me.example.client.value.impl.CheckBoxValue;
+import me.example.client.util.input.MouseUtil;
+import me.example.client.util.visual.RenderUtil;
+import me.example.client.mod.value.impl.CheckBoxValue;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -26,6 +23,7 @@ import java.util.List;
  * @author Geuxy
  */
 public class GuiModValues extends GuiScreen {
+
     private final GuiModlist modlist;
     private final Mod mod;
 
@@ -37,7 +35,7 @@ public class GuiModValues extends GuiScreen {
         this.modlist = modlist;
         this.mod = mod;
 
-        Base.INSTANCE.getValueManager().getValues(mod).forEach(v -> {
+        mod.getValues().forEach(v -> {
             float compWidth = modlist.getWindowWidth() * 2 - 24;
             float compHeight = 16;
 
@@ -89,6 +87,7 @@ public class GuiModValues extends GuiScreen {
 
         if(wheel > 0) {
             this.valueScroll += amount;
+
         } else if(wheel < 0) {
             this.valueScroll -= amount;
         }
@@ -116,7 +115,7 @@ public class GuiModValues extends GuiScreen {
         float backX = modlist.getHalfWidth() + modlist.getWindowWidth() - 30;
         float backY = modlist.getHalfHeight() - modlist.getWindowHeight();
 
-        return MouseUtil.isMouseOver(mouseX, mouseY, backX, backY, 30, 30);
+        return MouseUtil.isMouseAt(mouseX, mouseY, backX, backY, 30, 30);
     }
 
 }

@@ -3,8 +3,8 @@ package me.example.client.mod.impl.hud;
 import me.example.client.mod.annotations.Bounds;
 import me.example.client.mod.HudMod;
 import me.example.client.mod.annotations.ModInfo;
-import me.example.client.util.RenderUtil;
-import me.example.client.value.impl.CheckBoxValue;
+import me.example.client.util.visual.RenderUtil;
+import me.example.client.mod.value.impl.CheckBoxValue;
 
 /**
  * Basic mixin client base.
@@ -15,12 +15,18 @@ import me.example.client.value.impl.CheckBoxValue;
 public class TestMod extends HudMod {
 
     // Setting example
-    private final CheckBoxValue border = new CheckBoxValue("Border", this);
+    private final CheckBoxValue border = new CheckBoxValue("Border", false);
 
-    // Renders mod while in game
+    /*
+     * Renders the mod while in game
+     */
     @Override
     public void render() {
         RenderUtil.drawRect(this.getPosX(), this.getPosY(), this.getBounds().width(), this.getBounds().height(), 0x90000000);
+
+        if(border.getValue()) {
+            RenderUtil.drawBorderRect(this.getPosX(), this.getPosY(), this.getBounds().width(), this.getBounds().height(), 1, 0x90000000);
+        }
 
         float centerX = this.getPosX() + this.getBounds().width() / 2;
         float centerY = this.getPosY() + this.getBounds().height() / 2;
@@ -28,11 +34,11 @@ public class TestMod extends HudMod {
         RenderUtil.drawCenteredStringWithShadow(this.getInfo().name(), centerX, centerY - (float) mc.fontRendererObj.FONT_HEIGHT / 2, -1);
     }
 
-    // Renders mod while in HudConfigScreen
+    /*
+     * Renders the mod while in HudConfigScreen
+     */
     @Override
-    public void renderDummy(float mouseX, float mouseY) {
-        super.renderDummy(mouseX, mouseY);
-
+    public void renderDummy() {
         this.render();
     }
 

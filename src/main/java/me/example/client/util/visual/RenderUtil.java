@@ -1,22 +1,26 @@
-package me.example.client.util;
+package me.example.client.util.visual;
 
-import net.minecraft.client.Minecraft;
+import lombok.experimental.UtilityClass;
+
+import me.example.client.util.interfaces.IMinecraft;
+
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+
 import org.lwjgl.opengl.GL11;
 
 /**
  * Basic mixin client base.
  * @author Geuxy
  */
-public class RenderUtil {
+@UtilityClass
+public class RenderUtil implements IMinecraft {
 
-    private static final Minecraft mc = Minecraft.getMinecraft();
-    private static final FontRenderer fr = mc.fontRendererObj;
+    private static final FontRenderer font = mc.fontRendererObj;
 
     // Draws a hollow rectangle
     public static void drawBorderRect(float x, float y, float width, float height, float thickness, int color) {
@@ -28,12 +32,12 @@ public class RenderUtil {
 
     // Draws a centered string with a shadow
     public static void drawCenteredStringWithShadow(String text, float x, float y, int color) {
-        fr.drawString(text, x - (float) fr.getStringWidth(text) / 2, y, color, true);
+        font.drawString(text, x - (float) font.getStringWidth(text) / 2, y, color, true);
     }
 
     // Draws a centered string
     public static void drawCenteredString(String text, float x, float y, int color) {
-        fr.drawString(text, x - (float) fr.getStringWidth(text) / 2, y, color, false);
+        font.drawString(text, x - (float) font.getStringWidth(text) / 2, y, color, false);
     }
 
     // Draws a rectangle but in a cleaner(ish) way

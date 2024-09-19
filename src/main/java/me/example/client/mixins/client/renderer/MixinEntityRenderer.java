@@ -12,7 +12,7 @@ public class MixinEntityRenderer {
 
     @Inject(method = "renderWorldPass", at = @At(value = "FIELD", target = "Lnet/minecraft/client/renderer/EntityRenderer;renderHand:Z", shift = At.Shift.BEFORE))
     public void renderWorldPass(int pass, float partialTicks, long finishTimeNano, CallbackInfo ci) {
-        new Render3DEvent(partialTicks).onFire();
+        new Render3DEvent(partialTicks).call();
     }
 
 }

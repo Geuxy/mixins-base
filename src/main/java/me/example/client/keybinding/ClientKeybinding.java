@@ -1,6 +1,9 @@
 package me.example.client.keybinding;
 
 import lombok.Getter;
+
+import me.example.client.BaseClient;
+
 import net.minecraft.client.settings.KeyBinding;
 
 /**
@@ -11,8 +14,12 @@ import net.minecraft.client.settings.KeyBinding;
 public abstract class ClientKeybinding extends KeyBinding {
 
     public ClientKeybinding(String description, int keyCode) {
-        super(description, keyCode, "Base Client");
+        super(description, keyCode, BaseClient.INSTANCE.getName() + " Client");
     }
 
-    public abstract void handle();
+    /*
+     * Action when the key code is pressed
+     */
+    public abstract void onKeyPressed();
+
 }

@@ -1,8 +1,8 @@
 package me.example.client.gui.modlist.component.sub.impl;
 
 import me.example.client.gui.modlist.component.sub.SubComponent;
-import me.example.client.util.RenderUtil;
-import me.example.client.value.impl.CheckBoxValue;
+import me.example.client.util.visual.RenderUtil;
+import me.example.client.mod.value.impl.CheckBoxValue;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;

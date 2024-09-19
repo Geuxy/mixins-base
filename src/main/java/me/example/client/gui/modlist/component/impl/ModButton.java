@@ -4,7 +4,7 @@ import me.example.client.gui.modlist.GuiModlist;
 import me.example.client.gui.modlist.component.Component;
 import me.example.client.gui.modlist.value.GuiModValues;
 import me.example.client.mod.Mod;
-import me.example.client.util.RenderUtil;
+import me.example.client.util.visual.RenderUtil;
 import net.minecraft.client.Minecraft;
 
 /**

@@ -1,32 +1,39 @@
 package me.example.client.keybinding;
 
 import lombok.Getter;
-import me.example.client.event.EventProtocol;
-import me.example.client.event.EventTarget;
-import me.example.client.event.impl.TickEvent;
-import me.example.client.keybinding.impl.ClientMenuKeybind;
-import org.lwjgl.input.Keyboard;
 
-import java.util.ArrayList;
-import java.util.List;
+import me.example.client.BaseClient;
+import me.example.client.event.EventSubscriber;
+import me.example.client.event.impl.GameTickEvent;
+import me.example.client.keybinding.impl.ClientMenuKeybind;
+
+import me.example.client.util.containers.Storage;
+import org.lwjgl.input.Keyboard;
 
 /**
  * Basic mixin client base.
  * @author Geuxy
  */
 @Getter
-public class KeybindingManager {
-    private final List<ClientKeybinding> keyBindingList = new ArrayList<>();
+public class KeybindingManager extends Storage<ClientKeybinding> {
 
-    public KeybindingManager() {
-        keyBindingList.add(new ClientMenuKeybind());
+    /*
+     * Called when client starts
+     */
+    public void onStart() {
+        this.addAll(
+                ClientMenuKeybind::new
+        );
 
-        EventProtocol.register(this);
+        BaseClient.INSTANCE.getEventManager().register(this);
     }
 
-    @EventTarget
-    public void onTick(TickEvent event) {
-        keyBindingList.stream().filter(k -> Keyboard.isKeyDown(k.getKeyCode())).forEach(ClientKeybinding::handle);
+    /*
+     * For all keys on tick event, if a key is pressed then perform their action
+     */
+    @EventSubscriber
+    public void onTick(GameTickEvent event) {
+        this.stream().filter(k -> Keyboard.isKeyDown(k.getKeyCode())).forEach(ClientKeybinding::onKeyPressed);
     }
 
 }

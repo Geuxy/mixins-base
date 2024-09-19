@@ -10,6 +10,7 @@ import org.lwjgl.input.Keyboard;
  * @author Geuxy
  */
 public class ClientMenuKeybind extends ClientKeybinding {
+
     private HudConfigScreen hudConfigScreen;
 
     public ClientMenuKeybind() {
@@ -17,7 +18,7 @@ public class ClientMenuKeybind extends ClientKeybinding {
     }
 
     @Override
-    public void handle() {
+    public void onKeyPressed() {
         if(Minecraft.getMinecraft().currentScreen == null) {
             if(hudConfigScreen == null)
                 hudConfigScreen = new HudConfigScreen();
