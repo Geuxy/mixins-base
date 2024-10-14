@@ -6,10 +6,13 @@ There are a few TODO comments that tell you where you are supposed to do certain
 
 # Features
 
+### Command System
+Custom client chat command system to look like a hacker, includes SayCommand
+
 ### Mod System.
 for mods with an example and has values/settings feature.
 
-### Reflect Event System.
+### Event System.
 An event system using annotation with priority sorting. Includes TickEvent, Render2DEvent and Render3DEvent
 
 ### Keybinding System
