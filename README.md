@@ -1,4 +1,4 @@
-# pvp-mixin-base
+# mixins-base
 A simple PvP Minecraft Client base using Mixins.
 
 ![Modlist GUI](https://raw.githubusercontent.com/Geuxy/pvp-mixin-base/refs/heads/main/images/modlist.png)
