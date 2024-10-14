@@ -1,15 +1,13 @@
 package me.example.client.event.impl;
 
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
 import me.example.client.event.callables.Event;
 
+@Getter @RequiredArgsConstructor
 public class Render3DEvent extends Event {
 
-    @Getter
-    private float partialTicks;
-
-    public Render3DEvent(float partialTicks) {
-        this.partialTicks = partialTicks;
-    }
+    private final float partialTicks;
 
 }

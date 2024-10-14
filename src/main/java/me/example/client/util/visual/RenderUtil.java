@@ -45,7 +45,10 @@ public class RenderUtil implements IMinecraft {
         drawRectangle(x, y, x + width, y + height, color);
     }
 
-    // Draws a rectangle
+    /*
+     * Draws a rectangle
+     * This is from minecraft but with floats instead
+    */
     public static void drawRectangle(float left, float top, float right, float bottom, int color) {
         if (left < right) {
             float i = left;
@@ -59,10 +62,7 @@ public class RenderUtil implements IMinecraft {
             bottom = j;
         }
 
-        float alpha = (float)(color >> 24 & 255) / 255.0F;
-        float red = (float)(color >> 16 & 255) / 255.0F;
-        float green = (float)(color >> 8 & 255) / 255.0F;
-        float blue = (float)(color & 255) / 255.0F;
+        float[] rgb = hexToRGB(color);
 
         Tessellator tessellator = Tessellator.getInstance();
         WorldRenderer worldrenderer = tessellator.getWorldRenderer();
@@ -70,7 +70,7 @@ public class RenderUtil implements IMinecraft {
         GlStateManager.enableBlend();
         GlStateManager.disableTexture2D();
         GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
-        GlStateManager.color(red, green, blue, alpha);
+        GlStateManager.color(rgb[0], rgb[1], rgb[2], rgb[3]);
 
         worldrenderer.begin(7, DefaultVertexFormats.POSITION);
         worldrenderer.pos(left, bottom, 0.0D).endVertex();
@@ -97,6 +97,15 @@ public class RenderUtil implements IMinecraft {
         height *= scale;
 
         GL11.glScissor((int) x, (int) (y - height), (int) width, (int) height);
+    }
+
+    private static float[] hexToRGB(int hex) {
+        float red = (float)(hex >> 16 & 255) / 255.0F;
+        float green = (float)(hex >> 8 & 255) / 255.0F;
+        float blue = (float)(hex & 255) / 255.0F;
+        float alpha = (float)(hex >> 24 & 255) / 255.0F;
+
+        return new float[] {red, green, blue, alpha};
     }
 
 }

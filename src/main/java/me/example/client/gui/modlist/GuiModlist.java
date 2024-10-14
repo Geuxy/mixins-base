@@ -18,7 +18,6 @@ import java.util.List;
  * Basic mixin client base.
  * @author Geuxy
  */
-
 @Getter @Setter
 public class GuiModlist extends GuiScreen {
 
@@ -62,9 +61,15 @@ public class GuiModlist extends GuiScreen {
     }
 
     public void drawWindow() {
-        RenderUtil.drawRect(halfWidth - windowWidth, halfHeight - windowHeight, windowWidth * 2, windowHeight * 2, 0x90000000);
-        RenderUtil.drawBorderRect(halfWidth - windowWidth, halfHeight - windowHeight, windowWidth * 2, windowHeight * 2, 0.5F, 0x90000000);
+        // Top Panel
+        RenderUtil.drawRect(halfWidth - windowWidth, halfHeight - windowHeight, windowWidth * 2, 30, 0x40000000);
         RenderUtil.drawBorderRect(halfWidth - windowWidth, halfHeight - windowHeight, windowWidth * 2, 30, 0.5F, 0x90000000);
+
+        // Body
+        RenderUtil.drawRect(halfWidth - windowWidth, halfHeight - windowHeight, windowWidth * 2, windowHeight * 2, 0x60000000);
+        RenderUtil.drawBorderRect(halfWidth - windowWidth, halfHeight - windowHeight, windowWidth * 2, windowHeight * 2, 0.5F, 0x90000000);
+
+
 
         String title = BaseClient.INSTANCE.getName() + " Client";
         mc.fontRendererObj.drawString(title, (int) (halfWidth - windowWidth + 10), (int) (halfHeight - windowHeight + 15) - mc.fontRendererObj.FONT_HEIGHT / 2, -1);

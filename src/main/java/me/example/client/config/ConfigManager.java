@@ -7,6 +7,7 @@ import lombok.Getter;
 
 import me.example.client.BaseClient;
 import me.example.client.config.impl.ModConfig;
+import me.example.client.util.console.ConsoleUtil;
 import me.example.client.util.interfaces.IMinecraft;
 
 import java.io.File;
@@ -31,25 +32,19 @@ public class ConfigManager implements IMinecraft {
      */
     public void onStart() {
         this.directory = new File(mc.mcDataDir, BaseClient.INSTANCE.getName());
-
-        if(!directory.exists()) {
-            directory.mkdirs();
-        }
+        this.createDir();
 
         this.modConfig = new ModConfig(new File(directory, "settings.json"), GSON);
-
-        this.createModConfig();
     }
 
     /*
-     * Load config if mod config file exists, else create one
+     * Creates the client directory if it does not exist
      */
-    public void createModConfig() {
-        if(modConfig.getFile().exists()) {
-            modConfig.load();
-
-        } else {
-            modConfig.save();
+    private void createDir() {
+        if(!directory.exists()) {
+            if(!directory.mkdir()) {
+                ConsoleUtil.error("Unable to create directory, path does not exist: " + directory.getAbsolutePath());
+            }
         }
     }
 

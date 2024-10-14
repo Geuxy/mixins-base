@@ -23,9 +23,8 @@ public class ModConfig extends Config {
     private JsonObject modsToJson() {
         JsonObject json = new JsonObject();
 
-        for(Mod mod : BaseClient.INSTANCE.getModManager()) {
-            json.add(mod.getInfo().name(), mod.toJson());
-        }
+        BaseClient.INSTANCE.getModManager().forEach(m -> json.add(m.getInfo().name(), m.toJson()));
+
         return json;
     }
 
@@ -36,7 +35,14 @@ public class ModConfig extends Config {
 
     @Override
     public void load() {
-        JsonObject json = (JsonObject) new JsonParser().parse(FileUtil.read(file));
+        BufferedReader reader = FileUtil.read(file);
+
+        if(reader == null) {
+            this.save();
+            return;
+        }
+
+        JsonObject json = (JsonObject) new JsonParser().parse(reader);
 
         for(Map.Entry<String, JsonElement> entry : json.entrySet()) {
             Mod mod = BaseClient.INSTANCE.getModManager().getModByName(entry.getKey());

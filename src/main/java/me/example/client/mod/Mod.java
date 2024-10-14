@@ -1,6 +1,7 @@
 package me.example.client.mod;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,6 +11,7 @@ import me.example.client.mod.annotations.Bounds;
 import me.example.client.mod.annotations.ModInfo;
 
 import me.example.client.mod.value.impl.CheckBoxValue;
+import me.example.client.mod.value.impl.ComboValue;
 import me.example.client.util.interfaces.IMinecraft;
 import me.example.client.mod.value.Value;
 
@@ -55,6 +57,14 @@ public abstract class Mod implements IMinecraft {
      * Changes the modules state, calls onEnable or onDisable, and saves changes to file.
      */
     public void setEnabled(boolean enabled) {
+        setEnabledNoSave(enabled);
+        BaseClient.INSTANCE.getConfigManager().getModConfig().save();
+    }
+
+    /*
+     * Changes the module state and calls onEnable or onDisable.
+     */
+    public void setEnabledNoSave(boolean enabled) {
         this.enabled = enabled;
 
         if(enabled) {
@@ -62,11 +72,6 @@ public abstract class Mod implements IMinecraft {
 
         } else {
             this.onDisable();
-        }
-
-        // Save module state
-        if(BaseClient.INSTANCE.getConfigManager() != null) {
-            BaseClient.INSTANCE.getConfigManager().getModConfig().save();
         }
     }
 
@@ -81,6 +86,9 @@ public abstract class Mod implements IMinecraft {
         for(Value<?> value : values) {
             if(value.isCheckBox()) {
                 valuesJson.addProperty(value.getName(), (Boolean) value.getValue());
+
+            } else if(value.isCombo()) {
+                valuesJson.addProperty(value.getName(), (String) value.getValue());
             }
         }
 
@@ -101,11 +109,16 @@ public abstract class Mod implements IMinecraft {
         /* TODO: When adding new values, copy what i did here
          *       with check box but the value type and value return type instead */
         for (Value<?> value : values) {
+            JsonElement valueJson = valuesJson.get(value.getName());
+
             if(value.isCheckBox()) {
-                ((CheckBoxValue)value).setValue(valuesJson.get(value.getName()).getAsBoolean());
+                ((CheckBoxValue)value).setValue(valueJson.getAsBoolean());
+
+            } else if(value.isCombo()) {
+                ((ComboValue)value).setValue(valueJson.getAsString());
             }
         }
-        this.setEnabled(json.get("enabled").getAsBoolean());
+        this.setEnabledNoSave(json.get("enabled").getAsBoolean());
     }
 
 }

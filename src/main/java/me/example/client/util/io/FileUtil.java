@@ -13,8 +13,7 @@ public class FileUtil {
             printWriter.println(content);
             printWriter.close();
 
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException ignored) {
         }
     }
 
@@ -22,8 +21,7 @@ public class FileUtil {
         try {
             return new BufferedReader(new FileReader(file));
 
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+        } catch (FileNotFoundException ignored) {
         }
 
         return null;

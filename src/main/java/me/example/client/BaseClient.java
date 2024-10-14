@@ -2,6 +2,7 @@ package me.example.client;
 
 import lombok.Getter;
 
+import me.example.client.command.CommandManager;
 import me.example.client.config.ConfigManager;
 import me.example.client.event.EventManager;
 import me.example.client.keybinding.KeybindingManager;
@@ -37,14 +38,19 @@ public class BaseClient {
     private final KeybindingManager keybindingManager = new KeybindingManager();
 
     /*
+     * File system for serialization and deserialization.
+     */
+    private final ConfigManager configManager = new ConfigManager();
+
+    /*
      * The most important part of a client, the features!
      */
     private final ModManager modManager = new ModManager();
 
     /*
-     * File system for serialization and deserialization.
+     * A client command system to feel like a hacker!!
      */
-    private final ConfigManager configManager = new ConfigManager();
+    private final CommandManager commandManager = new CommandManager();
 
     /*
      * Called a bit after the game starts
@@ -53,6 +59,7 @@ public class BaseClient {
         this.keybindingManager.onStart();
         this.modManager.onStart();
         this.configManager.onStart();
+        this.commandManager.onStart();
     }
 
     /*

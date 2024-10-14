@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import me.example.client.BaseClient;
 import me.example.client.mod.value.impl.CheckBoxValue;
+import me.example.client.mod.value.impl.ComboValue;
 
 /**
  * Basic mixin client base.
@@ -26,6 +27,10 @@ public class Value<T> {
 
     public boolean isCheckBox() {
         return this instanceof CheckBoxValue;
+    }
+
+    public boolean isCombo() {
+        return this instanceof ComboValue;
     }
 
 }

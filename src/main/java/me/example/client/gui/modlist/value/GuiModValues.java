@@ -3,8 +3,10 @@ package me.example.client.gui.modlist.value;
 import me.example.client.gui.modlist.GuiModlist;
 import me.example.client.gui.modlist.component.sub.SubComponent;
 import me.example.client.gui.modlist.component.sub.impl.CheckBox;
+import me.example.client.gui.modlist.component.sub.impl.ComboBox;
 import me.example.client.mod.Mod;
 
+import me.example.client.mod.value.impl.ComboValue;
 import me.example.client.util.input.MouseUtil;
 import me.example.client.util.visual.RenderUtil;
 import me.example.client.mod.value.impl.CheckBoxValue;
@@ -42,7 +44,10 @@ public class GuiModValues extends GuiScreen {
             /* TODO: When adding new values, copy what i did here
              *       with check box but the value type and value return type instead */
             if(v.isCheckBox()) {
-                VALUES.add(new CheckBox((CheckBoxValue) v, 0, 0, compWidth, compHeight));
+                VALUES.add(new CheckBox((CheckBoxValue)v, 0, 0, compWidth, compHeight));
+
+            } else if(v.isCombo()) {
+                VALUES.add(new ComboBox((ComboValue)v, 0, 0, compWidth, compHeight));
             }
         });
     }
