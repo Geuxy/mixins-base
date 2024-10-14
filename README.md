@@ -1,6 +1,8 @@
 # pvp-mixin-base
 A simple PvP Minecraft Client base using Mixins.
 
+![Modlist GUI](https://raw.githubusercontent.com/Geuxy/pvp-mixin-base/refs/heads/main/images/modlist.png)
+
 # Note when adding a new value type
 There are a few TODO comments that tell you where you are supposed to do certain things so the values can be saved and loaded.
 
