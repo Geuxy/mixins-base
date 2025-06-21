@@ -5,10 +5,10 @@ A simple PvP Minecraft Client base using Mixins.
 # License
 This project is licensed under the [Creative Commons Attribution-NonCommercial 4.0 International License (CC BY-NC 4.0)](https://creativecommons.org/licenses/by-nc/4.0/)
 ### This license allows you to:
-- Share (copy and redistribute the material in any material or format)
-- Adapt - Remix, transform, and build upon the material
+- Share, copy and redistribute in any medium or format.
+- Remix, transform and build upon the material.
 
-## #As long as you:
+### As long as you
 - Do **not** use for commercial purposes
 - Provide appropriate [attribution](#attribution)
 
