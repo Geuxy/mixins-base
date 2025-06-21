@@ -1,7 +1,16 @@
 # mixins-base
 A simple PvP Minecraft Client base using Mixins.
-
 ![Modlist GUI](https://raw.githubusercontent.com/Geuxy/pvp-mixin-base/refs/heads/main/images/modlist.png)
+
+# License
+This project is licensed under the [Creative Commons Attribution-NonCommercial 4.0 International License (CC BY-NC 4.0)](https://creativecommons.org/licenses/by-nc/4.0/)
+### This license allows you to:
+- Share (copy and redistribute the material in any material or format)
+- Adapt - Remix, transform, and build upon the material
+
+## #As long as you:
+- Do **not** use for commercial purposes
+- Provide appropriate [attribution](#attribution)
 
 # Note when adding a new value type
 There are a few TODO comments that tell you where you are supposed to do certain things so the values can be saved and loaded.
