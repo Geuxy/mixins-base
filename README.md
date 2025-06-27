@@ -30,6 +30,7 @@ A GUI that lets you drag hud mods smoothly without dragging multiple at the same
 A GUI that lets you change states and values of mods.
 
 ## 🪪 License
+This code is now protected using a license, Fluid client devs, have fun cleaning your 90% pasted code lol.
 This project is licensed under the [Creative Commons Attribution-NonCommercial 4.0 International License (CC BY-NC 4.0)](https://creativecommons.org/licenses/by-nc/4.0/)
 
 **This license allows you to:**
